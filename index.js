@@ -17,10 +17,34 @@ app.get('/profile', (req, res) => {
   res.json({ name: 'Vaishnavi', mission: 'Sakala Mission', day: 5, skills: ['Node.js', 'Git', 'JavaScript', 'Express', 'POST'], isShipping: true });
 });
 
-app.post('/profile', (req, res) => {
-  const updated = { name: 'Vaishnavi', mission: 'Sakala Mission', day: 5, skills: ['Node.js', 'Git', 'JavaScript', 'Express', 'POST'], isShipping: true, ...req.body };
-  res.json({ message: 'Profile updated', data: updated });
-});
+app.post('/profile', async (req, res) => {
+  try {
+    const { name, age, email } = req.body  // add email
+
+    // BACKEND VALIDATION STARTS
+    if (!name || !age || !email) {
+      return res.status(400).json({ message: 'Name, age, and email are required' })
+    }
+    
+    if (typeof age !== 'number' && isNaN(Number(age))) {
+      return res.status(400).json({ message: 'Age must be a number' })
+    }
+    
+    if (!email.includes('@')) {
+      return res.status(400).json({ message: 'Invalid email format' })
+    }
+    // BACKEND VALIDATION ENDS 
+
+    const newUser = await User.create({ name, age, email })  // add email
+    res.status(201).json({ message: 'Shipped!', data: newUser })
+  } catch (err) {
+    // THIS BLOCK FOR DUPLICATE EMAIL
+    if (err.code === 11000) {
+      return res.status(400).json({ message: 'Email already exists. Use a different email.' })
+    }
+    res.status(500).json({ message: err.message })
+  }
+})
 
 app.get('/users', async(req, res) => {
   const users = await User.find();
