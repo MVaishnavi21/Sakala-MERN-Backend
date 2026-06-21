@@ -46,11 +46,6 @@ app.post('/profile', async (req, res) => {
   }
 })
 
-app.get('/users', async(req, res) => {
-  const users = await User.find();
-  res.json(users);
-});
-
 app.post('/users', async (req, res) => {
   try {
     const newUser = new User(req.body);
