@@ -72,3 +72,14 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
+
+// DELETE user by ID
+app.delete('/users/:id', async (req, res) => {
+  try {
+    const { id } = req.params
+    await User.findByIdAndDelete(id)
+    res.json({ message: 'User deleted' })
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to delete user' })
+  }
+})
