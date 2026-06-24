@@ -83,3 +83,16 @@ app.delete('/users/:id', async (req, res) => {
     res.status(500).json({ error: 'Failed to delete user' })
   }
 })
+
+app.put('/users/:id', async (req, res) => {
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true } //returns the updated doc
+    )
+    res.json({ message:'User updated', data: updatedUser })
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to update user'})
+  }
+})
