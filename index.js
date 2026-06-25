@@ -5,9 +5,11 @@ const cors = require('cors');
 const User = require('./models/User');
 const app = express();
 const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on ${PORT}`))
 
 app.use(express.json());
 app.use(cors());
+app.use('/auth', require('./routes/auth'));
 
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('MongoDB connected. Day 6 win.'))
