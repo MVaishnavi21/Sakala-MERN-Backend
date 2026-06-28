@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const AuthUser = require('../models/AuthUser') // ← check this exists
+const AuthUser = require('../models/AuthUser') 
 
 const JWT_SECRET = process.env.JWT_SECRET
 

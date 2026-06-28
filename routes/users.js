@@ -38,4 +38,18 @@ router.delete('/:id', auth, async (req, res) => {
   }
 })
 
+router.put('/:id', auth, async (req, res) => {
+  try {
+    const { name, email } = req.body
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      { name, email },
+      { new: true }
+    )
+    res.json(user)
+  } catch (err) {
+    res.status(500).json({ msg: 'Server error' })
+  }
+})
+
 module.exports = router
